@@ -73,33 +73,33 @@ Format the routine with time allocations for each step.`;
   button.textContent = 'Generating...';
   button.disabled = true;
   
-  try {    
-    // Make the API call to OpenAI's chat completions endpoint
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+  try {
+    // Make the API call to Mistral's chat completions endpoint
+    const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${API_KEY}`
       },
       body: JSON.stringify({
-        model: 'gpt-4o',
-        messages: [      
-          { role: 'system', content: `You are a helpful assistant that creates quick, focused daily routines. Always keep routines short, realistic, and tailored to the user's preferences.` },
+        model: 'mistral-small-latest',
+        messages: [
+          { role: 'system', content: 'You are a helpful assistant that creates quick, focused daily routines. Always keep routines short, realistic, and tailored to the user\'s preferences.' },
           { role: 'user', content: prompt }
         ],
         temperature: 0.7,
-        max_completion_tokens: 500
+        max_tokens: 500
       })
     });
-    
+
     // Convert API response to JSON and get the generated routine
     const data = await response.json();
     const routine = data.choices[0].message.content;
-    
+
     // Show the result section and display the routine
     document.getElementById('result').classList.remove('hidden');
     document.getElementById('routineOutput').textContent = routine;
-    
+
   } catch (error) {
     // If anything goes wrong, log the error and show user-friendly message
     console.error('Error:', error);
